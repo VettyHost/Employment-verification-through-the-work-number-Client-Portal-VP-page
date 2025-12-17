@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employment Verification</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        
+        /* Animation for view switching */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Equifax Specific Styles */
+        .equifax-header {
+            background-color: #cc0000; /* Equifax Red */
+            color: white;
+        }
+        .eq-table th {
+            background-color: #f1f1f1;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            color: #333;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+        .eq-table td {
+            font-size: 0.8rem;
+            color: #333;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+        
+        /* Accordion Transitions */
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 2000px; /* Large height for expansion */
+            opacity: 1;
+            overflow: hidden;
+        }
+        .accordion-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+        .rotate-icon {
+            transition: transform 0.3s ease;
+        }
+        .rotate-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-10 px-4">
+
+    <!-- MAIN VIEW (Checkr Style) -->
+    <div id="main-view" class="w-full max-w-4xl bg-white rounded-xl shadow-sm border border-gray-200 fade-in">
+        
+        <!-- Header Row -->
+        <div class="px-8 py-6 border-b border-gray-200 flex items-start justify-between">
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-bold text-gray-900">Employment</h1>
+                
+                <!-- The Trigger Dropdown (Beside Title) -->
+                <div 
+                    onclick="showEquifaxReport()"
+                    class="flex items-center gap-2 cursor-pointer group px-3 py-1 rounded hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200"
+                >
+                    <span class="text-indigo-600 font-semibold text-sm">Report By WorkNumber</span>
+                    <i class="fas fa-chevron-down text-indigo-600 text-xs transform group-hover:translate-y-0.5 transition-transform"></i>
+                </div>
+            </div>
+
+            <!-- Status and Date (Top Right) -->
+            <div class="flex flex-col items-end">
+                <div class="flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-blue-600"></span>
+                    <span class="text-sm font-bold text-blue-600 uppercase tracking-wide">In Progress</span>
+                </div>
+                <div class="text-xs text-gray-400 mt-1 font-medium">12/17/2025</div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="p-8">
+            
+            <!-- Company Block -->
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                
+                <!-- 1. ABC Header (Toggle Trigger) - ABOVE Banner -->
+                <div 
+                    class="bg-gray-50 px-6 py-4 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition-colors border-b border-gray-200"
+                    onclick="toggleAccordion('company-details', 'company-arrow')"
+                >
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded bg-white flex items-center justify-center text-gray-500 border border-gray-200 shadow-sm font-bold text-lg">
+                            A
+                        </div>
+                        <div>
+                            <!-- Removed "Employer Company Name" label from header as requested -->
+                            <h3 class="font-bold text-gray-900 text-lg">ABC</h3>
+                        </div>
+                    </div>
+                    <i id="company-arrow" class="fas fa-chevron-down text-gray-400 rotate-icon"></i>
+                </div>
+
+                <!-- 2. Collapsible Content -->
+                <div id="company-details" class="accordion-content bg-white">
+                    
+                    <!-- Blue Banner (Inside Collapsible Area) -->
+                    <div class="px-6 py-3 bg-blue-50 border-b border-blue-100 flex items-center gap-2 text-sm text-blue-800">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="font-medium">Information provided By Work Number</span>
+                    </div>
+
+                    <!-- Fields List -->
+                    <div class="px-6 py-6 space-y-6"> 
+                        
+                        <!-- Field 1: Moved Employer Company Name here -->
+                        <div class="flex flex-col border-b border-gray-100 pb-4">
+                            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Employer Company Name</label>
+                            <div class="text-gray-900 font-medium text-base">ABC</div>
+                        </div>
+
+                        <!-- Field 2 -->
+                        <div class="flex flex-col border-b border-gray-100 pb-4">
+                            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Position</label>
+                            <div class="text-gray-900 font-medium text-base">Software Engineer</div>
+                        </div>
+
+                        <!-- Field 3 -->
+                        <div class="flex flex-col border-b border-gray-100 pb-4">
+                            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Month Started</label>
+                            <div class="text-gray-900 font-medium text-base">03/2021</div>
+                        </div>
+
+                        <!-- Field 4 -->
+                        <div class="flex flex-col border-b border-gray-100 pb-4">
+                            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Month Ended</label>
+                            <div class="text-gray-900 font-medium text-base">11/2025</div>
+                        </div>
+
+                        <!-- Field 5 -->
+                        <div class="flex flex-col border-b border-gray-100 pb-4">
+                            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">I am Self-employed</label>
+                            <div class="text-gray-900 font-medium text-base">No</div>
+                        </div>
+
+                        <!-- Field 6 -->
+                        <div class="flex flex-col pb-2">
+                            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">I still work here</label>
+                            <div class="text-gray-900 font-medium text-base">No</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+
+    <!-- EQUIFAX REPORT VIEW (Hidden by default) -->
+    <div id="equifax-view" class="fixed inset-0 bg-gray-100 z-50 overflow-y-auto hidden">
+        
+        <!-- Red Header Bar -->
+        <div class="equifax-header w-full h-16 flex items-center px-4 md:px-8 shadow-md">
+            <!-- Back Button -->
+            <button onclick="hideEquifaxReport()" class="mr-6 text-white hover:text-gray-200 transition-colors">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </button>
+            
+            <div class="flex items-center gap-3">
+                <!-- Mock Logo -->
+                <div class="w-8 h-8 bg-white rounded-sm flex items-center justify-center text-[#cc0000] font-bold text-xs border border-white">
+                    WN
+                </div>
+                <span class="text-lg font-bold tracking-tight">The Work Number®</span>
+            </div>
+            <div class="ml-auto text-sm font-light hidden sm:block">
+                Employment Data Report
+            </div>
+        </div>
+
+        <!-- Report Container -->
+        <div class="max-w-5xl mx-auto my-8 bg-white shadow-lg border border-gray-300 p-8 min-h-[80vh]">
+            
+            <div class="flex justify-between items-start mb-8 border-b border-gray-200 pb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Employment Data Report</h2>
+                    <p class="text-sm text-gray-500">Provided by Equifax Workforce Solutions</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-xs text-gray-500">Report Date</div>
+                    <div class="font-bold text-gray-800">12/17/2025</div>
+                </div>
+            </div>
+
+            <!-- Detailed Table (Screenshot 2 replication) -->
+            <div class="mb-6">
+                <h3 class="text-sm font-bold text-[#cc0000] uppercase mb-2 border-b-2 border-[#cc0000] inline-block pb-1">Employment History</h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full eq-table border-collapse mt-4">
+                        <thead>
+                            <tr>
+                                <th>Employer Name</th>
+                                <th>Position Title</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Total Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="font-bold">ABC COMPANY INC</span><br><span class="text-xs text-gray-500">Code: 10293</span></td>
+                                <td>Software Engineer</td>
+                                <td>03/01/2021</td>
+                                <td>11/30/2025</td>
+                                <td>4 Years 8 Months</td>
+                                <td>Inactive</td>
+                            </tr>
+                             <!-- Extra rows to make it look like a full report -->
+                             <tr>
+                                <td><span class="font-bold">TECH SOLUTIONS LLC</span><br><span class="text-xs text-gray-500">Code: 55921</span></td>
+                                <td>Jr. Developer</td>
+                                <td>06/15/2019</td>
+                                <td>02/28/2021</td>
+                                <td>1 Year 8 Months</td>
+                                <td>Inactive</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                <div>
+                    <h3 class="text-sm font-bold text-[#cc0000] uppercase mb-2 border-b-2 border-[#cc0000] inline-block pb-1">Most Recent Pay Data</h3>
+                    <div class="bg-gray-50 p-4 border border-gray-200 text-sm space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Pay Period End:</span>
+                            <span class="font-bold">11/30/2025</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Pay Rate:</span>
+                            <span class="font-bold">$XX,XXX.XX / Year</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Hours:</span>
+                            <span class="font-bold">40.00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-sm font-bold text-[#cc0000] uppercase mb-2 border-b-2 border-[#cc0000] inline-block pb-1">Disclaimer</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        This report is generated based on information provided by employers. Equifax Workforce Solutions does not guarantee the accuracy or completeness of the data. Use of this information is subject to the terms of the Fair Credit Reporting Act (FCRA).
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function showEquifaxReport() {
+            document.getElementById('main-view').classList.add('hidden');
+            document.getElementById('equifax-view').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        function hideEquifaxReport() {
+            document.getElementById('equifax-view').classList.add('hidden');
+            document.getElementById('main-view').classList.remove('hidden');
+        }
+
+        function toggleAccordion(contentId, arrowId) {
+            const content = document.getElementById(contentId);
+            const arrow = document.getElementById(arrowId);
+            
+            content.classList.toggle('collapsed');
+            arrow.classList.toggle('collapsed');
+        }
+    </script>
+</body>
+</html>
